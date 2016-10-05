@@ -54,9 +54,12 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           .on("drag", function(args){
             thisGraph.state.justDragged = true;
             thisGraph.dragmove.call(thisGraph, args);
+			console.log("dragstart");
           })
           .on("dragend", function() {
             // todo check if edge-mode is selected
+			console.log("dragend");
+			thisGraph.state.justDragged = false;
           });
 
     // listen for key events
@@ -289,12 +292,25 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         state = thisGraph.state;
     d3.event.stopPropagation();
     state.mouseDownNode = d;
+
+	// shift means make link
     if (d3.event.shiftKey){
       state.shiftNodeDrag = d3.event.shiftKey;
       // reposition dragged directed edge
       thisGraph.dragLine.classed('hidden', false)
         .attr('d', 'M' + d.x + ',' + d.y + 'L' + d.x + ',' + d.y);
       return;
+    }
+	
+	// handle selection
+	if (state.selectedEdge){
+      thisGraph.removeSelectFromEdge();
+    }
+    var prevNode = state.selectedNode;
+    if (!prevNode || prevNode !== d){
+      thisGraph.replaceSelectNode(d3node, d);
+    } else{
+      thisGraph.removeSelectFromNode();
     }
   };
 
@@ -367,31 +383,15 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         thisGraph.updateGraph();
       }
     } else{
+		
       // we're in the same node
-      if (state.justDragged) {
-        // dragged, not clicked
-        state.justDragged = false;
-      } else{
-        // clicked, not dragged
-        if (d3.event.shiftKey){
+      if (d3.event.altKey){
           // shift-clicked node: edit text content
           var d3txt = thisGraph.changeTextOfNode(d3node, d);
           var txtNode = d3txt.node();
           thisGraph.selectElementContents(txtNode);
           txtNode.focus();
-        } else{
-          if (state.selectedEdge){
-            thisGraph.removeSelectFromEdge();
-          }
-          var prevNode = state.selectedNode;
-
-          if (!prevNode || prevNode.id !== d.id){
-            thisGraph.replaceSelectNode(d3node, d);
-          } else{
-            thisGraph.removeSelectFromNode();
-          }
-        }
-      }
+      } 
     }
     state.mouseDownNode = null;
     return;
@@ -432,7 +432,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
   };
 
   // keydown on main svg
-  GraphCreator.prototype.svgKfeyDown = function() {
+  GraphCreator.prototype.svgKeyDown = function() {
     var thisGraph = this,
         state = thisGraph.state,
         consts = thisGraph.consts;
@@ -450,6 +450,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       if (selectedNode){
         thisGraph.nodes.splice(thisGraph.nodes.indexOf(selectedNode), 1);
         thisGraph.spliceLinksForNode(selectedNode);
+		console.log("del node");
         state.selectedNode = null;
         thisGraph.updateGraph();
       } else if (selectedEdge){
