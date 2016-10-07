@@ -54,11 +54,9 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           .on("drag", function(args){
             thisGraph.state.justDragged = true;
             thisGraph.dragmove.call(thisGraph, args);
-			console.log("dragstart");
           })
           .on("dragend", function() {
             // todo check if edge-mode is selected
-			console.log("dragend");
 			thisGraph.state.justDragged = false;
           });
 
@@ -319,18 +317,22 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     var thisGraph= this,
         consts = thisGraph.consts,
         htmlEl = d3node.node();
+	var bbBox = htmlEl.getBoundingClientRect();
+		
     d3node.selectAll("text").remove();
-    var nodeBCR = htmlEl.getBoundingClientRect(),
-        curScale = nodeBCR.width/50, //consts.nodeRadius,
-        placePad  =  5*curScale,
-        useHW = curScale > 1 ? nodeBCR.width*0.71 : 50*1.42; //consts.nodeRadius*1.42;
+	
+    var useHW = bbBox.width; 
+    
+	
+	
+
     // replace with editableconent text
     var d3txt = thisGraph.svg.selectAll("foreignObject")
           .data([d])
           .enter()
           .append("foreignObject")
-          .attr("x", nodeBCR.left + placePad )
-          .attr("y", nodeBCR.top + placePad)
+          .attr("x", bbBox.left + 15 )
+          .attr("y", bbBox.top )
           .attr("height", 2*useHW)
           .attr("width", useHW)
           .append("xhtml:p")
