@@ -323,9 +323,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 	
     var useHW = bbBox.width; 
     
-	
-	
-
     // replace with editableconent text
     var d3txt = thisGraph.svg.selectAll("foreignObject")
           .data([d])
@@ -335,6 +332,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           .attr("y", bbBox.top )
           .attr("height", 2*useHW)
           .attr("width", useHW)
+		  .attr("text-anchor", "start")
           .append("xhtml:p")
           .attr("id", consts.activeEditId)
           .attr("contentEditable", "true")
