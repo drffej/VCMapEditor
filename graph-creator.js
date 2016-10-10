@@ -140,7 +140,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         filereader.readAsText(uploadFile);
 
       } else {
-        alert("Your browser won't let you save this graph -- try upgrading your browser to IE 10+ or Chrome or Firefox.");
+        window.alert("Your browser won't let you save this graph -- try upgrading your browser to IE 10+ or Chrome or Firefox.");
       }
 
     });
@@ -148,6 +148,13 @@ document.onload = (function(d3, saveAs, Blob, undefined){
     // handle delete graph
     d3.select("#delete-graph").on("click", function(){
       thisGraph.deleteGraph(false);
+    });
+	
+	// handle export graph
+	d3.select("#export-graph").on("click", function(){
+      //thisGraph.deleteGraph(false);
+	  console.log("here");
+	  window.alert("export graph");
     });
   };
 
@@ -450,7 +457,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       if (selectedNode){
         thisGraph.nodes.splice(thisGraph.nodes.indexOf(selectedNode), 1);
         thisGraph.spliceLinksForNode(selectedNode);
-		console.log("del node");
         state.selectedNode = null;
         thisGraph.updateGraph();
       } else if (selectedEdge){
@@ -598,34 +604,77 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 				.append("path")
 					.attr("d", "M0,-5L10,0L0,5")
 					.attr("class","arrowHead");
+  
+  // plot the wardley grid components
+  
   var yXais = svg.append("line")
   		.attr("class","arrow")
   		.attr("marker-end","url(#arrow)")
-        .attr("x2", 20)
-        .attr("y2", 20)
-        .attr("x1", 20)
+        .attr("x2", 40)
+        .attr("y2", 40)
+        .attr("x1", 40)
         .attr("y1", height-90)
         .attr("stroke-width", 4)
         .attr("stroke", "black");
         svg.append('text')
-        .attr("font-family", "Arial, Helvetica, sans-serif")
-    .attr("fill", "Black")
-    .style("font", "normal 12px Arial")
+             .attr("font-family", "Arial, Helvetica, sans-serif")
+             .style("font", "bold 16px Arial")
              .attr('class', 'barsEndlineText')
              .attr('text-anchor', 'middle')
-             .attr("transform", "translate(100, 100)rotate(90)")
-             .text('I am label')
+             .attr("transform", "translate(20, " + height/2 + ")rotate(90)")
+             .text('Value Chain')
   
   var xXais = svg.append("line")
-        .attr("x1", 5)
+        .attr("x1", 40)
         .attr("y1", height-90)
-        .attr("x2", width)
+        .attr("x2", width-20)
         .attr("y2", height-90)
         .attr("class","arrow")
   		.attr("marker-end","url(#arrow)")
         .attr("stroke-width", 4)
-        .attr("stroke", "black");
-                          
+        .attr("stroke", "black")
+         svg.append('text')
+             .attr("font-family", "Arial, Helvetica, sans-serif")
+             .style("font", "bold 16px Arial")
+             .attr('class', 'barsEndlineText')
+             .attr('text-anchor', 'middle')
+             .attr("transform", "translate(" + (width-70) + "," + (height - 70)  + ")")
+             .text('Evolution');
+  
+  function plotvalueaxis(x, n, axisLabel){
+	  svg.append("line")
+	  .attr("x2", n*x)
+        .attr("y2", 30)
+        .attr("x1", n*x)
+        .attr("y1", height-70)
+        .attr("stroke-width", 1)
+        .attr("stroke", "black")
+		.style("stroke-dasharray", ("3, 3"));
+      svg.append('text')
+        .attr("font-family", "Arial, Helvetica, sans-serif")
+        .style("font", "normal 12px Arial")
+        //.attr('class', 'barsEndlineText')
+        .attr('text-anchor', 'middle')
+        .attr("transform", "translate(" + (n*x - x/2) + "," + (height - 70)  + ")")
+        .text(axisLabel)
+  }
+               
+  plotvalueaxis(width/4, 1, "Genesis");
+  plotvalueaxis(width/4,2, "Custom Built");	
+  plotvalueaxis(width/4, 3, "Product (+Rental)");	  	
+  plotvalueaxis(width/4, 4, "Commodity (+Utility)");
+  
+  function plotlabels(x,y, label){
+	svg.append('text')
+        .attr("font-family", "Arial, Helvetica, sans-serif")
+        .style("font", "bold 14px Arial")
+        .attr('text-anchor', 'middle')
+        .attr("transform", "translate(" + x + "," + y  + ")")
+        .text(label)  
+  }
+  
+  plotlabels(90, 50, "Uncharted");
+  plotlabels(width-50, 50, "Industrialised")
                         
   var graph = new GraphCreator(svg, nodes, edges);
       graph.setIdCt(2);
