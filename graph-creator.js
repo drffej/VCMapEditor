@@ -62,7 +62,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
     // listen for key events
     d3.select(window).on("keydown", function(){
-      thisGraph.svgKeyDown.call(thisGraph);
+      thisGraph.svgKeyDown.call(thisGraph); 
     })
     .on("keyup", function(){
       thisGraph.svgKeyUp.call(thisGraph);
@@ -618,19 +618,11 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         .attr("stroke", "black");
         svg.append('text')
              .attr("font-family", "Arial, Helvetica, sans-serif")
-<<<<<<< HEAD
              .style("font", "bold 16px Arial")
              .attr('class', 'barsEndlineText')
              .attr('text-anchor', 'middle')
              .attr("transform", "translate(20, " + height/2 + ")rotate(-90)")
              .text('Value Chain')
-=======
-             .style("font", "normal 12px Arial")
-             .attr('class', 'barsEndlineText')
-             .attr('text-anchor', 'middle')
-             .attr("transform", "translate(20, " + height/2 + ")rotate(90)")
-             .text('I am lanbhjhjhjhjbel')
->>>>>>> origin/master
   
   var xXais = svg.append("line")
         .attr("x1", 40)
@@ -643,7 +635,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
         .attr("stroke", "black")
          svg.append('text')
              .attr("font-family", "Arial, Helvetica, sans-serif")
-<<<<<<< HEAD
              .style("font", "bold 16px Arial")
              .attr('class', 'barsEndlineText')
              .attr('text-anchor', 'middle')
@@ -695,14 +686,6 @@ document.onload = (function(d3, saveAs, Blob, undefined){
   }
   plotylabels(30, 70, "Visible");
   plotylabels(30, height-120,"Invisible");
-=======
-             .style("font", "normal 12px Arial")
-             .attr('class', 'barsEndlineText')
-             .attr('text-anchor', 'middle')
-             .attr("transform", "translate(" + width/2 + ", 20)")
-             .text('I am lanbhjhjhjhjbel');
-                         
->>>>>>> origin/master
                         
   var graph = new GraphCreator(svg, nodes, edges);
       graph.setIdCt(2);
