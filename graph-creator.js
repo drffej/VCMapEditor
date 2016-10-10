@@ -621,7 +621,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
              .style("font", "bold 16px Arial")
              .attr('class', 'barsEndlineText')
              .attr('text-anchor', 'middle')
-             .attr("transform", "translate(20, " + height/2 + ")rotate(90)")
+             .attr("transform", "translate(20, " + height/2 + ")rotate(-90)")
              .text('Value Chain')
   
   var xXais = svg.append("line")
@@ -641,7 +641,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
              .attr("transform", "translate(" + (width-70) + "," + (height - 70)  + ")")
              .text('Evolution');
   
-  function plotvalueaxis(x, n, axisLabel){
+  function plotvalueaxis(x, n, axisLabel, rotate){
 	  svg.append("line")
 	  .attr("x2", n*x)
         .attr("y2", 30)
@@ -662,7 +662,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
   plotvalueaxis(width/4, 1, "Genesis");
   plotvalueaxis(width/4,2, "Custom Built");	
   plotvalueaxis(width/4, 3, "Product (+Rental)");	  	
-  plotvalueaxis(width/4, 4, "Commodity (+Utility)");
+  plotvalueaxis(width/4-3, 4, "Commodity (+Utility)");
   
   function plotlabels(x,y, label){
 	svg.append('text')
@@ -674,7 +674,18 @@ document.onload = (function(d3, saveAs, Blob, undefined){
   }
   
   plotlabels(90, 50, "Uncharted");
-  plotlabels(width-50, 50, "Industrialised")
+  plotlabels(width-65, 50, "Industrialised");
+  
+  function plotylabels(x,y, label){
+	svg.append('text')
+        .attr("font-family", "Arial, Helvetica, sans-serif")
+        .style("font", "normal 12px Arial")
+        .attr('text-anchor', 'middle')
+        .attr("transform", "translate(" + x + "," + y  + ")rotate(-90)")
+        .text(label)  
+  }
+  plotylabels(30, 70, "Visible");
+  plotylabels(30, height-120,"Invisible");
                         
   var graph = new GraphCreator(svg, nodes, edges);
       graph.setIdCt(2);
