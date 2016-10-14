@@ -1,6 +1,7 @@
 document.onload = (function(d3, saveAs, Blob, undefined){
   "use strict";
 
+  var mythis = d3.select(this);
   // TODO add user settings
   var consts = {
     defaultTitle: "random variable"
@@ -154,7 +155,51 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 	d3.select("#export-graph").on("click", function(){
       //thisGraph.deleteGraph(false);
 	  console.log("here");
-	  window.alert("export graph");
+	  var container = d3.select('#graph'),
+	  content = container.html().trim(),
+	  canvas = document.getElementById('svg-canvas');
+	  //console.log(btoa(content));
+	  
+	   d3.select(this)
+        .attr("href", 'data:application/octet-stream;base64,' + btoa(content))
+        .attr("download", "viz.svg") ;
+	  
+	  var html = d3.select("svg")
+        .attr("title", "test2")
+        .attr("version", 1.1)
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+        .node().parentNode.innerHTML;
+	  //d3.select("body").append("div")
+        //.attr("href", "data:image/svg+xml;base64," + btoa(html))
+       // .attr("download", "viz.svg") ;
+	
+    d3.select("body").append("div")
+        //.attr("id", "download")
+		.attr("class", "modal")
+        .style("top", "10px")
+        .style("left", "10px")
+		.append("div")
+		.attr("class", "modal-content")
+        .html("Right-click on this preview and choose Save as<br />Left-Click to dismiss<br />")
+        .append("img")
+		//.attr("src", 'data:application/octet-stream;base64,' + btoa(content))
+        .attr("src", "data:image/svg+xml;base64,"+ btoa(html))
+		
+		
+    d3.select("#download")
+        .on("click", function(){
+            if(event.button == 0){
+                d3.select(this).transition()
+                    //.style("opacity", 0)
+					.style("display", "none")
+                    .remove();
+            }
+        })
+      .transition()
+       .duration(500)
+       .style("opacity", 1);
+
+	  
     });
   };
 
@@ -349,7 +394,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
           })
           .on("keydown", function(d){
             d3.event.stopPropagation();
-            if (d3.event.keyCode == consts.ENTER_KEY && !d3.event.shiftKey){
+            if (d3.event.keyCode == consts.ENTER_KEY && !d3.event.altKey){
               this.blur();
             }
           })
@@ -587,6 +632,7 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
   /** MAIN SVG **/
   var svg = d3.select(settings.appendElSpec).append("svg")
+		.attr("id","mysvg")
         .attr("width", width)
         .attr("height", height),
 
@@ -604,6 +650,8 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 				.append("path")
 					.attr("d", "M0,-5L10,0L0,5")
 					.attr("class","arrowHead");
+  
+  
   
   // plot the wardley grid components
   
