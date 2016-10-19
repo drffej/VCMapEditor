@@ -151,55 +151,26 @@ document.onload = (function(d3, saveAs, Blob, undefined){
       thisGraph.deleteGraph(false);
     });
 	
-	// handle export graph
+	// handle export SVG graph
 	d3.select("#export-graph").on("click", function(){
-      //thisGraph.deleteGraph(false);
-	  console.log("here");
-	  var container = d3.select('#graph'),
-	  content = container.html().trim(),
-	  canvas = document.getElementById('svg-canvas');
-	  //console.log(btoa(content));
 	  
-	   d3.select(this)
-        .attr("href", 'data:application/octet-stream;base64,' + btoa(content))
-        .attr("download", "viz.svg") ;
-	  
+	  // pull down the SVG element
 	  var html = d3.select("svg")
         .attr("title", "test2")
         .attr("version", 1.1)
         .attr("xmlns", "http://www.w3.org/2000/svg")
-        .node().parentNode.innerHTML;
-	  //d3.select("body").append("div")
-        //.attr("href", "data:image/svg+xml;base64," + btoa(html))
-       // .attr("download", "viz.svg") ;
+        .node().parentNode.innerHTML;	 
 	
-    d3.select("body").append("div")
-        //.attr("id", "download")
-		.attr("class", "modal")
-        .style("top", "10px")
-        .style("left", "10px")
-		.append("div")
-		.attr("class", "modal-content")
-        .html("Right-click on this preview and choose Save as<br />Left-Click to dismiss<br />")
-        .append("img")
-		//.attr("src", 'data:application/octet-stream;base64,' + btoa(content))
-        .attr("src", "data:image/svg+xml;base64,"+ btoa(html))
-		
-		
-    d3.select("#download")
-        .on("click", function(){
-            if(event.button == 0){
-                d3.select(this).transition()
-                    //.style("opacity", 0)
-					.style("display", "none")
-                    .remove();
-            }
-        })
-      .transition()
-       .duration(500)
-       .style("opacity", 1);
-
-	  
+	  // display as image and open dialogue box
+	  d3.select("#preview")
+		.attr("src", "data:image/svg+xml;base64,"+ btoa(html))
+		.attr("width", "100%")
+		.attr("height", "100%");
+      d3.select(".modal")
+		.style("display", "block")
+		.attr("x", 10);
+	
+      
     });
   };
 
@@ -615,6 +586,16 @@ document.onload = (function(d3, saveAs, Blob, undefined){
   window.onbeforeunload = function(){
     return "Make sure to save your graph locally before leaving :-)";
   };
+  
+  // handle image preview events
+  var modal = document.getElementById('myModal');
+  var modalClose = document.getElementById('myModelClose');
+  window.onclick = function(event) {
+    if (event.target == modalClose) {
+		// X (close) selected, so remove from display
+        modal.style.display = "none";
+    }
+}
 
   var docEl = document.documentElement,
       bodyEl = document.getElementsByTagName('body')[0];
