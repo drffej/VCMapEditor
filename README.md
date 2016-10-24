@@ -1,9 +1,7 @@
-directed-graph-creator
-======================
+Wardley-map-creator
+===================
 
-Interactive tool for creating Warledge maps, created using d3.js.
-
-
+Interactive tool for creating Wardley maps, created using d3.js.
 
 Operation:
 
@@ -19,6 +17,8 @@ Run:
 * navigate to http://127.0.0.1:8000
 
 Github repo is at https://github.com/drffej
+
+Based on code from https://bl.ocks.org/cjrd/6863459
 
 License: MIT/X
 
