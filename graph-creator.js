@@ -1,3 +1,5 @@
+// code based on https://bl.ocks.org/cjrd/6863459
+
 document.onload = (function(d3, saveAs, Blob, undefined){
   "use strict";
 
@@ -602,7 +604,10 @@ document.onload = (function(d3, saveAs, Blob, undefined){
 
   var width = window.innerWidth || docEl.clientWidth || bodyEl.clientWidth,
       height =  window.innerHeight|| docEl.clientHeight|| bodyEl.clientHeight;
-
+	 console.log(width);
+	  console.log(height);
+  width = 1229;
+  height = 741;
   var xLoc = width/2 - 25,
       yLoc = 100;
 
